@@ -17,7 +17,7 @@ namespace updateData
         private ketnoi()
         {
             //string connstring = string.Format("Server=27.72.29.28;port=3306; database=cnf; User Id=kho; password=1234");
-             string connstring = string.Format("Server=localhost;port=3306; database=cnf; User Id=hts; password=1211");
+             string connstring = string.Format("Server=localhost;port=3306; database=cnf; User Id=kho; password=1234");
             conn = new MySqlConnection(connstring);
         }
         private static ketnoi _khoitao = null;
