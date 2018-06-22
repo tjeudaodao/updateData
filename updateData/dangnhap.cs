@@ -26,7 +26,7 @@ namespace updateData
                 kiem = con.kiemtradangnhap(txttaikhoan.Text, txtpass.Text);
                 if (kiem[0] == txttaikhoan.Text && kiem[1] == txtpass.Text)
                 {
-                    MessageBox.Show("Đăng nhập thành công");
+                    MessageBox.Show("Đăng nhập thành công\nMời anh vào anh : "+txttaikhoan.Text);
                     this.Hide();
                 }
                 else
@@ -68,7 +68,7 @@ namespace updateData
 
         private void dangnhap_Load(object sender, EventArgs e)
         {
-
+            txttaikhoan.Select();
             txttaikhoan.Focus();
         }
     }
