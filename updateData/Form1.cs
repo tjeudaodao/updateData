@@ -65,7 +65,7 @@ namespace updateData
 
                 lbsoluongma.Text = (datag1.RowCount - 1).ToString();
                 string soluongthaydoi = (Int32.Parse(lbsoluongma.Text) - int.Parse(soluongbandau)).ToString();
-                MessageBox.Show("da cap nhat xong:\n cap nhat : " + soluongthaydoi + " ma");
+                MessageBox.Show("Đã cập nhật xong:\n Cập nhật được : " + soluongthaydoi + " mã mới");
             }
             catch (Exception)
             {
@@ -137,7 +137,7 @@ namespace updateData
                 lbsoluongma2.Text = (datag2.RowCount - 1).ToString();
                 string soluongthaydoi = (Int32.Parse(lbsoluongma2.Text) - int.Parse(soluongbandau)).ToString();
 
-                MessageBox.Show("da cap nhat xong:\n cap nhat : " + soluongthaydoi + " ma");
+                MessageBox.Show("Đã cập nhật xong:\n Cập nhật được : " + soluongthaydoi + " mã mới");
             }
             catch (Exception)
             {

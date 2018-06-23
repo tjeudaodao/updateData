@@ -89,7 +89,7 @@ namespace updateData
         {
             string ngay = DateTime.Now.ToString("dd-MM-yyyy");
             string sqlbackup = @"truncate  data_backup ; insert data_backup select * from data ; truncate data";
-            string sql = string.Format("load data infile '{0}' into table data fields terminated by \";\" enclosed by '\"' lines terminated by \"\\r\\n\" ignore 1 lines", duongdanUpload + tenfile);
+            string sql = string.Format("load data infile '{0}' into table data fields terminated by \",\" enclosed by '\"' lines terminated by \"\\r\\n\" ignore 1 lines", duongdanUpload + tenfile);
             string sqlngaycapnhat = @"update ngaycapnhat set ngaydata = '"+ngay+"'";
             Open();
             MySqlCommand cmd = new MySqlCommand(sqlbackup, conn);
@@ -107,7 +107,7 @@ namespace updateData
         {
             string ngay = DateTime.Now.ToString("dd-MM-yyyy");
             string sqlbackup = @"truncate  khuyenmai_backup ; insert khuyenmai_backup select * from khuyenmai ; truncate khuyenmai";
-            string sql = string.Format("load data infile '{0}' into table khuyenmai fields terminated by \";\" enclosed by '\"' lines terminated by \"\\r\\n\" ignore 1 lines", duongdanUpload + tenfile);
+            string sql = string.Format("load data infile '{0}' into table khuyenmai fields terminated by \",\" enclosed by '\"' lines terminated by \"\\r\\n\" ignore 1 lines", duongdanUpload + tenfile);
             string sqlngaycapnhat = @"update ngaycapnhat set ngaykhuyenmai = '" + ngay + "'";
             Open();
             MySqlCommand cmd = new MySqlCommand(sqlbackup, conn);
