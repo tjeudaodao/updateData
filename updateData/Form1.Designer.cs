@@ -40,6 +40,7 @@
             this.btnChonfile = new System.Windows.Forms.Button();
             this.datag1 = new System.Windows.Forms.DataGridView();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.pbbaoloi = new System.Windows.Forms.PictureBox();
             this.lbngaycapnhat2 = new System.Windows.Forms.Label();
             this.lbsoluongma2 = new System.Windows.Forms.Label();
             this.lbduongdan2 = new System.Windows.Forms.Label();
@@ -48,13 +49,12 @@
             this.btnchayupdate2 = new System.Windows.Forms.Button();
             this.btnchonfile2 = new System.Windows.Forms.Button();
             this.datag2 = new System.Windows.Forms.DataGridView();
-            this.pbbaoloi = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.datag1)).BeginInit();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.datag2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbbaoloi)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datag2)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -137,6 +137,7 @@
             // btnChay
             // 
             this.btnChay.BackColor = System.Drawing.Color.Tomato;
+            this.btnChay.Enabled = false;
             this.btnChay.FlatAppearance.BorderSize = 0;
             this.btnChay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnChay.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -191,6 +192,14 @@
             this.tabPage2.Text = "update danh muc khuyen mai";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // pbbaoloi
+            // 
+            this.pbbaoloi.Location = new System.Drawing.Point(347, 114);
+            this.pbbaoloi.Name = "pbbaoloi";
+            this.pbbaoloi.Size = new System.Drawing.Size(83, 55);
+            this.pbbaoloi.TabIndex = 13;
+            this.pbbaoloi.TabStop = false;
+            // 
             // lbngaycapnhat2
             // 
             this.lbngaycapnhat2.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -243,6 +252,7 @@
             // btnchayupdate2
             // 
             this.btnchayupdate2.BackColor = System.Drawing.Color.Indigo;
+            this.btnchayupdate2.Enabled = false;
             this.btnchayupdate2.FlatAppearance.BorderSize = 0;
             this.btnchayupdate2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnchayupdate2.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -278,14 +288,6 @@
             this.datag2.Size = new System.Drawing.Size(701, 311);
             this.datag2.TabIndex = 5;
             // 
-            // pbbaoloi
-            // 
-            this.pbbaoloi.Location = new System.Drawing.Point(347, 114);
-            this.pbbaoloi.Name = "pbbaoloi";
-            this.pbbaoloi.Size = new System.Drawing.Size(83, 55);
-            this.pbbaoloi.TabIndex = 13;
-            this.pbbaoloi.TabStop = false;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 18F);
@@ -307,8 +309,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.datag1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.datag2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbbaoloi)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.datag2)).EndInit();
             this.ResumeLayout(false);
 
         }

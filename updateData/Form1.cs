@@ -8,12 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Diagnostics;
 
 namespace updateData
 {
     public partial class Form1 : Form
     {
         string duongdanUploadgoc = @"C:\ProgramData\MySQL\MySQL Server 8.0\Uploads\";
+        string duongdanApp = @"D:/";
+        string duongdan1 = null;
+        string duongdan2 = null;
+
         public Form1()
         {
             InitializeComponent();
@@ -24,8 +29,31 @@ namespace updateData
             this.Controls.Add(fdangnhap);
 
             fdangnhap.BringToFront();
+
         }
 
+        void updatefileData()
+        {
+            string s1 = duongdan1;
+            if (!string.IsNullOrEmpty(s1))
+            {
+                s1 = s1.Replace(@"\","/");
+                string strCmdText = string.Format("/C sqlite3 -cmd \".open {0}/databarcode.db\" -cmd \"DROP TABLE IF EXISTS data; \" -cmd \"CREATE TABLE data(masp TEXT,barcode TEXT);\" -cmd \".mode csv\" -cmd \".import {1} data\"",duongdanApp,s1);
+               
+                Process.Start("CMD.exe", strCmdText);
+            }
+        }
+        void updatefileKhuyenmai()
+        {
+            string s1 = duongdan2;
+            if (!string.IsNullOrEmpty(s1))
+            {
+                s1 = s1.Replace(@"\", "/");
+                string strCmdText = string.Format("/C sqlite3 -cmd \".open {0}/datakhuyenmai.db\" -cmd \"DROP TABLE IF EXISTS khuyenmai; \" -cmd \"CREATE TABLE khuyenmai(matong TEXT,giagoc TEXT,giagiam TEXT);\" -cmd \".mode csv\" -cmd \".import {1} khuyenmai\"", duongdanApp, s1);
+
+                Process.Start("CMD.exe", strCmdText);
+            }
+        }
         private void btnChonfile_Click(object sender, EventArgs e)
         {
             try
@@ -34,8 +62,9 @@ namespace updateData
                 openF.Filter = "chon file csv (*.csv)|*.csv";
                 if (openF.ShowDialog() == DialogResult.OK)
                 {
-                    string duongdanfile = openF.FileName;
-                    lbduongdan.Text = duongdanfile;
+                    duongdan1 = openF.FileName;
+                    lbduongdan.Text = duongdan1;
+                    btnChay.Enabled = true;
                 }
             }
             catch (Exception)
@@ -65,6 +94,8 @@ namespace updateData
 
                 lbsoluongma.Text = (datag1.RowCount - 1).ToString();
                 string soluongthaydoi = (Int32.Parse(lbsoluongma.Text) - int.Parse(soluongbandau)).ToString();
+                updatefileData();
+                btnChay.Enabled = false;
                 MessageBox.Show("Đã cập nhật xong:\n Cập nhật được : " + soluongthaydoi + " mã mới");
             }
             catch (Exception)
@@ -105,8 +136,9 @@ namespace updateData
                 openF.Filter = "chon file csv (*.csv)|*.csv";
                 if (openF.ShowDialog() == DialogResult.OK)
                 {
-                    string duongdanfile = openF.FileName;
-                    lbduongdan2.Text = duongdanfile;
+                    duongdan2 = openF.FileName;
+                    lbduongdan2.Text = duongdan2;
+                    btnchayupdate2.Enabled = true;
                 }
             }
             catch (Exception)
@@ -136,7 +168,8 @@ namespace updateData
 
                 lbsoluongma2.Text = (datag2.RowCount - 1).ToString();
                 string soluongthaydoi = (Int32.Parse(lbsoluongma2.Text) - int.Parse(soluongbandau)).ToString();
-
+                updatefileKhuyenmai();
+                btnchayupdate2.Enabled = false;
                 MessageBox.Show("Đã cập nhật xong:\n Cập nhật được : " + soluongthaydoi + " mã mới");
             }
             catch (Exception)
@@ -146,5 +179,7 @@ namespace updateData
             }
             
         }
+
+        
     }
 }
