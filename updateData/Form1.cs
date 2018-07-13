@@ -15,7 +15,7 @@ namespace updateData
     public partial class Form1 : Form
     {
         string duongdanUploadgoc = @"C:\ProgramData\MySQL\MySQL Server 8.0\Uploads\";
-        string duongdanApp = @"D:/";
+        string duongdanApp = @"E:/kho/app/luutru";
         string duongdan1 = null;
         string duongdan2 = null;
 
@@ -38,9 +38,14 @@ namespace updateData
             if (!string.IsNullOrEmpty(s1))
             {
                 s1 = s1.Replace(@"\","/");
-                string strCmdText = string.Format("/C sqlite3 -cmd \".open {0}/databarcode.db\" -cmd \"DROP TABLE IF EXISTS data; \" -cmd \"CREATE TABLE data(masp TEXT,barcode TEXT);\" -cmd \".mode csv\" -cmd \".import {1} data\"",duongdanApp,s1);
-               
-                Process.Start("CMD.exe", strCmdText);
+                var proc1 = new ProcessStartInfo();
+                string Command;
+                Command = string.Format("sqlite3 -cmd \".open {0}/databarcode.db\" -cmd \"DROP TABLE IF EXISTS data; \" -cmd \"CREATE TABLE data(masp TEXT,barcode TEXT);\" -cmd \".mode csv\" -cmd \".import {1} data\"", duongdanApp, s1);
+                proc1.WorkingDirectory = @"C:\Windows\System32";
+                proc1.FileName = @"C:\Windows\System32\cmd.exe";
+                proc1.Verb = "runas";
+                proc1.Arguments = "/C " + Command;
+                Process.Start(proc1);
             }
         }
         void updatefileKhuyenmai()
@@ -49,9 +54,15 @@ namespace updateData
             if (!string.IsNullOrEmpty(s1))
             {
                 s1 = s1.Replace(@"\", "/");
-                string strCmdText = string.Format("/C sqlite3 -cmd \".open {0}/datakhuyenmai.db\" -cmd \"DROP TABLE IF EXISTS khuyenmai; \" -cmd \"CREATE TABLE khuyenmai(matong TEXT,giagoc TEXT,giagiam TEXT);\" -cmd \".mode csv\" -cmd \".import {1} khuyenmai\"", duongdanApp, s1);
-
-                Process.Start("CMD.exe", strCmdText);
+                //string strCmdText = string.Format("/C sqlite3 -cmd \".open {0}/datakhuyenmai.db\" -cmd \"DROP TABLE IF EXISTS khuyenmai; \" -cmd \"CREATE TABLE khuyenmai(matong TEXT,giagoc TEXT,giagiam TEXT);\" -cmd \".mode csv\" -cmd \".import {1} khuyenmai\"", duongdanApp, s1);
+                var proc1 = new ProcessStartInfo();
+                string Command;
+                Command = string.Format("sqlite3 -cmd \".open {0}/datakhuyenmai.db\" -cmd \"DROP TABLE IF EXISTS khuyenmai; \" -cmd \"CREATE TABLE khuyenmai(matong TEXT,giagoc TEXT,giagiam TEXT);\" -cmd \".mode csv\" -cmd \".import {1} khuyenmai\"", duongdanApp, s1);
+                proc1.WorkingDirectory = @"C:\Windows\System32";
+                proc1.FileName = @"C:\Windows\System32\cmd.exe";
+                proc1.Verb = "runas";
+                proc1.Arguments = "/C " + Command;
+                Process.Start(proc1);
             }
         }
         private void btnChonfile_Click(object sender, EventArgs e)
