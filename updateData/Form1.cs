@@ -90,7 +90,7 @@ namespace updateData
         {
             try
             {
-                string soluongbandau = lbsoluongma.Text;
+                //string soluongbandau = lbsoluongma.Text;
                 string tenfile = Path.GetFileName(lbduongdan.Text);
                 if (File.Exists(duongdanUploadgoc + tenfile))
                 {
@@ -104,10 +104,10 @@ namespace updateData
                 lbngaycapnhat.Text = con.layngay("ngaydata");
 
                 lbsoluongma.Text = (datag1.RowCount - 1).ToString();
-                string soluongthaydoi = (Int32.Parse(lbsoluongma.Text) - int.Parse(soluongbandau)).ToString();
+                //string soluongthaydoi = (Int32.Parse(lbsoluongma.Text) - int.Parse(soluongbandau)).ToString();
                 updatefileData();
                 btnChay.Enabled = false;
-                MessageBox.Show("Đã cập nhật xong:\n Cập nhật được : " + soluongthaydoi + " mã mới");
+                MessageBox.Show("Đã cập nhật xong");
             }
             catch (Exception)
             {
@@ -164,7 +164,7 @@ namespace updateData
         {
             try
             {
-                string soluongbandau = lbsoluongma2.Text;
+                //string soluongbandau = lbsoluongma2.Text;
                 string tenfile = Path.GetFileName(lbduongdan2.Text);
                 if (File.Exists(duongdanUploadgoc + tenfile))
                 {
@@ -178,10 +178,10 @@ namespace updateData
                 lbngaycapnhat2.Text = con.layngay("ngaykhuyenmai");
 
                 lbsoluongma2.Text = (datag2.RowCount - 1).ToString();
-                string soluongthaydoi = (Int32.Parse(lbsoluongma2.Text) - int.Parse(soluongbandau)).ToString();
+                //string soluongthaydoi = (Int32.Parse(lbsoluongma2.Text) - int.Parse(soluongbandau)).ToString();
                 updatefileKhuyenmai();
                 btnchayupdate2.Enabled = false;
-                MessageBox.Show("Đã cập nhật xong:\n Cập nhật được : " + soluongthaydoi + " mã mới");
+                MessageBox.Show("Đã cập nhật xong");
             }
             catch (Exception)
             {
