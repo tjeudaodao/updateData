@@ -111,7 +111,7 @@ namespace updateData
             //string sqlbackup = @"truncate  khuyenmai_backup ; insert khuyenmai_backup select * from khuyenmai ; truncate khuyenmai";
             string sqlbackup = @"truncate khuyenmai";
             string sql = string.Format("load data infile '{0}' into table khuyenmai fields terminated by \",\" enclosed by '\"' lines terminated by \"\\r\\n\" ignore 1 lines", duongdanUpload + tenfile);
-            string sqlngaycapnhat = @"update ngaycapnhat set ngaykhuyenmai = '" + ngay + "' ; update ngaycapnhat set tongmakhuyenmai = (select count(*) from khuyenmai) ";
+            string sqlngaycapnhat = @"update ngaycapnhat set ngaykhuyenmai = '" + ngay + "' , tongmakhuyenmai = (select count(*) from khuyenmai) ";
             Open();
             MySqlCommand cmd = new MySqlCommand(sqlbackup, conn);
             cmd.ExecuteNonQuery();
