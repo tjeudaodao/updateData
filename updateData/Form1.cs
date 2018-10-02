@@ -9,16 +9,43 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace updateData
 {
     public partial class Form1 : Form
     {
-        string duongdanUploadgoc = @"C:\ProgramData\MySQL\MySQL Server 8.0\Uploads\";
-        string duongdanApp = @"E:/kho/app/luutru";
+        //string duongdanUploadgoc = @"C:\ProgramData\MySQL\MySQL Server 8.0\Uploads\";
+        //string duongdanApp = @"E:/kho/app/luutru";
+        string duongdanUploadgoc = null;
+        string duongdanApp = null;
         string duongdan1 = null;
         string duongdan2 = null;
+        string serverMysql = null;
+        string serverFTP = null;
+        List<string> soduongdanPM = new List<string>();
 
+        public void HamlayJSON()
+        {
+            try
+            {
+                JObject joConfig = JObject.Parse(File.ReadAllText("config.json"));
+                duongdanUploadgoc = (string)joConfig["duongdanuploadgoc"];
+                duongdanApp = (string)joConfig["duongdanApp"];
+                ketnoi.Setduongdan((string)joConfig["duongdanUpload"]);
+                serverMysql = (string)joConfig["server"];
+                serverFTP = (string)joConfig["ftp"];
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Co loi xem lai file Config.json");
+                throw;
+            }
+            
+
+        }
         public Form1()
         {
             InitializeComponent();
@@ -65,6 +92,7 @@ namespace updateData
                 Process.Start(proc1);
             }
         }
+        // tabpage update data
         private void btnChonfile_Click(object sender, EventArgs e)
         {
             try
@@ -120,6 +148,7 @@ namespace updateData
         {
             try
             {
+                HamlayJSON();
                 var con = ketnoi.Khoitao();
                 lbngaycapnhat.Text = con.layngay("ngaydata");
                 datag1.DataSource = con.layBang("data");
@@ -138,7 +167,7 @@ namespace updateData
             }
            
         }
-
+        // tabpage update khuyenmai
         private void btnchonfile2_Click(object sender, EventArgs e)
         {
             try
@@ -191,6 +220,103 @@ namespace updateData
             
         }
 
-        
+        // tabpage capnhat phan mem
+        private void btnChonfilePM_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog openF = new OpenFileDialog();
+                openF.Filter = "chon file muon Upload Allfile (*.*)|*.*";
+                openF.Multiselect = true;
+                if (openF.ShowDialog() == DialogResult.OK)
+                {
+                    soduongdanPM.Clear();
+                    string hienthi = "-";
+                    foreach (string item in openF.FileNames)
+                    {
+                        soduongdanPM.Add(item);
+                        hienthi = "-" + hienthi + item + "\n";
+                    }
+                    richTBhienthifilechon.Text = hienthi;
+                    btnCapnhatphanmem.Enabled = true;
+                }
+            }
+            catch (Exception)
+            {
+
+                MessageBox.Show("Co loi ket noi voi may chu hoac file chon co van de");
+            }
+        }
+        void HienthiThongtincapnhatphanmem(string tenungdung)
+        {
+            var con = ketnoi.Khoitao(serverMysql);
+            lbsophienban.Text = con.LaydulieuCapnhat("phienban", tenungdung);
+            lbngaycapnhatphanmem.Text = con.LaydulieuCapnhat("ngay", tenungdung);
+            ftp ftpcilent = new ftp(serverFTP, "hts", "hoanglaota");
+            string[] thongtin = ftpcilent.directoryListDetailed("app/luutru/" + tenungdung + "/");
+            for (int i = 0; i < thongtin.Length; i++)
+            {
+                richTBhienthifilecapnhat.AppendText("-" + thongtin[i] + "\n");
+            }
+        }
+        private void radioKho_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioKho.Checked)
+            {
+                HienthiThongtincapnhatphanmem("khocnf");
+            }
+        }
+
+        private void radioVM_Cilent_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioVM_Cilent.Checked)
+            {
+                HienthiThongtincapnhatphanmem("vmcnf");
+            }
+        }
+
+        private void radioKhuyenmaiCNF_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioKhuyenmaiCNF.Checked)
+            {
+                HienthiThongtincapnhatphanmem("khuyenmaicnf");
+            }
+        }
+        void UpdatePhanmem(string tenungdung)
+        {
+            var con = ketnoi.Khoitao(serverMysql);
+            con.UpdatePhienbancapnhat(tenungdung);
+            foreach (string item in soduongdanPM)
+            {
+                using (WebClient client = new WebClient())
+                {
+                    client.Credentials = new NetworkCredential("hts", "hoanglaota");
+                    client.UploadFile("ftp://27.72.29.28/app/luutru/" + tenungdung + "/" + Path.GetFileName(item), item);
+                };
+                
+            }
+            HienthiThongtincapnhatphanmem(tenungdung);
+        }
+        private void btnCapnhatphanmem_Click(object sender, EventArgs e)
+        {
+            DialogResult hoi = MessageBox.Show("Nhớ chọn chính xác phần mềm cần cập nhật trước khi Upload, nếu không sẽ upload nhầm gây lỗi chương trình", "Chắc chắn", MessageBoxButtons.OKCancel);
+            if (hoi == DialogResult.OK)
+            {
+                if (radioKho.Checked)
+                {
+                    UpdatePhanmem("khocnf");
+                }
+                else if (radioVM_Cilent.Checked)
+                {
+                    UpdatePhanmem("vmcnf");
+                }
+                else if (radioKhuyenmaiCNF.Checked)
+                {
+                    UpdatePhanmem("khuyenmaicnf");
+                }
+                btnCapnhatphanmem.Enabled = false;
+                MessageBox.Show("Đã upload thành công!");
+            }
+        }
     }
 }

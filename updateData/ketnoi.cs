@@ -14,14 +14,22 @@ namespace updateData
     {
         #region Khoi tao ketnoi
         private MySqlConnection conn = null;
+        private MySqlConnection conupdate = null;
+
         private ketnoi()
+        {
+            string connstring = string.Format("Server=localhost;port=3306; database=cnf; User Id=hts; password=hoanglaota");
+            conn = new MySqlConnection(connstring);
+        }
+        private ketnoi(string host)
         {
             //string connstring = string.Format("Server=27.72.29.28;port=3306; database=cnf; User Id=kho; password=1234");
             //string connstring = string.Format("Server=localhost;port=3306; database=cnf; User Id=hts; password=1211");
-             string connstring = string.Format("Server=localhost;port=3306; database=cnf; User Id=hts; password=hoanglaota");
-            conn = new MySqlConnection(connstring);
+            string connstring = string.Format("Server="+host+";port=3306; database=cnf; User Id=hts; password=hoanglaota");
+            conupdate = new MySqlConnection(connstring);
         }
         private static ketnoi _khoitao = null;
+        private static ketnoi _khoitaou = null;
         public static ketnoi Khoitao()
         {
             if (_khoitao == null)
@@ -30,6 +38,15 @@ namespace updateData
             }
             return _khoitao;
         }
+        public static ketnoi Khoitao(string host)
+        {
+            if (_khoitaou == null)
+            {
+                _khoitaou = new ketnoi(host);
+            }
+            return _khoitaou;
+        }
+        // dong mo ket noi conn
         public void Open()
         {
             if (conn.State != System.Data.ConnectionState.Open)
@@ -52,7 +69,29 @@ namespace updateData
                 conn.Close();
             }
         }
+        // dong mo ket noi conupdate
+        public void Openu()
+        {
+            if (conupdate.State != System.Data.ConnectionState.Open)
+            {
+                try
+                {
+                    conupdate.Open();
+                }
+                catch (Exception)
+                {
 
+                    MessageBox.Show("Không kết nối được đến máy chủ ", "Lỗi");
+                }
+            }
+        }
+        public void Closeu()
+        {
+            if (conupdate.State != System.Data.ConnectionState.Closed)
+            {
+                conupdate.Close();
+            }
+        }
         #endregion
 
         #region Xuly
@@ -83,8 +122,12 @@ namespace updateData
         #endregion
 
         #region update 
-
-        string duongdanUpload = @"C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\";
+        static string duongdanUpload = null;
+        public static void Setduongdan(string duongdan)
+        {
+            duongdanUpload = duongdan;
+        }
+        //static string duongdanUpload = @"C:\\ProgramData\\MySQL\\MySQL Server 8.0\\Uploads\\";
 
         public void chayUpdatedata(string tenfile)
         {
@@ -140,6 +183,33 @@ namespace updateData
             }
             Close();
             return h;
+        }
+        #endregion
+
+        #region cap nhat phan mem
+        public string LaydulieuCapnhat(string tencotcanlay,string tenungdung)
+        {
+            
+            string kq = null;
+            string sql = "select "+tencotcanlay+" from bangcapnhatphanmem where tenungdung = '" + tenungdung + "'";
+            Openu();
+            MySqlCommand cmd = new MySqlCommand(sql, conupdate);
+            MySqlDataReader dtr = cmd.ExecuteReader();
+            dtr.Read();
+            kq = dtr[0].ToString();
+            Closeu();
+            return kq;
+        }
+        public void UpdatePhienbancapnhat(string tenungdung)
+        {
+            string ngay = DateTime.Now.ToString("dd-MM-yyyy");
+            int sophienban =int.Parse(LaydulieuCapnhat("phienban", tenungdung));
+            sophienban = sophienban + 1;
+            string sql = "update bangcapnhatphanmem set phienban = '" + sophienban.ToString() + "' , ngay = '" + ngay + "' where tenungdung = '"+tenungdung+"'";
+            Openu();
+            MySqlCommand cmd = new MySqlCommand(sql, conupdate);
+            cmd.ExecuteNonQuery();
+            Closeu();
         }
         #endregion
     }
