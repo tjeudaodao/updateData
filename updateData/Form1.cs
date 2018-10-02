@@ -149,7 +149,7 @@ namespace updateData
             try
             {
                 HamlayJSON();
-                var con = ketnoi.Khoitao();
+                var con = ketnoi.Khoitao(serverMysql);
                 lbngaycapnhat.Text = con.layngay("ngaydata");
                 datag1.DataSource = con.layBang("data");
                 lbsoluongma.Text = (datag1.RowCount - 1).ToString();

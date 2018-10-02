@@ -8,20 +8,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Newtonsoft.Json.Linq;
+using System.IO;
+
 namespace updateData
 {
     public partial class dangnhap : UserControl
     {
+        string serverMysql = null;
+
         public dangnhap()
         {
             InitializeComponent();
+            
         }
         void ham()
         {
             if (!string.IsNullOrEmpty(txttaikhoan.Text) && !string.IsNullOrEmpty(txtpass.Text))
             {
                 string[] kiem = new string[2];
-                var con = ketnoi.Khoitao();
+                var con = ketnoi.Khoitao(serverMysql);
 
                 kiem = con.kiemtradangnhap(txttaikhoan.Text, txtpass.Text);
                 if (kiem[0] == txttaikhoan.Text && kiem[1] == txtpass.Text)
@@ -70,6 +76,8 @@ namespace updateData
         {
             txttaikhoan.Select();
             txttaikhoan.Focus();
+            JObject joConfig = JObject.Parse(File.ReadAllText("config.json"));
+            serverMysql = (string)joConfig["server"];
         }
     }
 }

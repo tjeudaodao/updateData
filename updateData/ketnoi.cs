@@ -99,24 +99,24 @@ namespace updateData
         {
             string h = null;
             string sql = string.Format("select {0} from ngaycapnhat", cotcanlay);
-            Open();
-            MySqlCommand cmd = new MySqlCommand(sql, conn);
+            Openu();
+            MySqlCommand cmd = new MySqlCommand(sql, conupdate);
             MySqlDataReader dtr = cmd.ExecuteReader();
             while (dtr.Read())
             {
                 h = dtr[0].ToString();
             }
-            Close();
+            Closeu();
             return h;
         }
         public DataTable layBang(string tenbangcanlay)
         {
             DataTable dt = new DataTable();
             string sql = string.Format("select * from {0}", tenbangcanlay);
-            Open();
-            MySqlDataAdapter dta = new MySqlDataAdapter(sql, conn);
+            Openu();
+            MySqlDataAdapter dta = new MySqlDataAdapter(sql, conupdate);
             dta.Fill(dt);
-            Close();
+            Closeu();
             return dt;
         }
         #endregion
@@ -173,15 +173,15 @@ namespace updateData
         {
             string[] h = new string[2];
             string sql = string.Format("select taikhoan,pass from dangnhap where taikhoan = '{0}' and pass = '{1}'", user, pass);
-            Open();
-            MySqlCommand cmd = new MySqlCommand(sql, conn);
+            Openu();
+            MySqlCommand cmd = new MySqlCommand(sql, conupdate);
             MySqlDataReader dtr = cmd.ExecuteReader();
             while (dtr.Read())
             {
                 h[0] = dtr[0].ToString();
                 h[1] = dtr[1].ToString();
             }
-            Close();
+            Closeu();
             return h;
         }
         #endregion
